@@ -15,9 +15,9 @@ for _ in range(n):
 
 dp = [0] * (k+1)
 
+
 # n = 물품의 수 / k = 버틸수 있는 무게 / graph = (무게, 가치)
 def fun(k, graph):
-
 
     for node in graph:
         weight = node[0]

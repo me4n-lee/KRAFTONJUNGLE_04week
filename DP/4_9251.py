@@ -15,6 +15,7 @@ a = len(first_list)
 b = len(second_list)
 
 #first 를 second 로 확인
+#세로 가로를 확실하게 체크하지 않으면 인덱스 에러 발생
 dp = [[0] * (b+1) for _ in range(a+1)]
 
 # print(dp)
@@ -37,6 +38,6 @@ def fun():
 
 
 result = fun()
-# print(result)
+print(result)
 answer = result[a][b]
 print(answer)

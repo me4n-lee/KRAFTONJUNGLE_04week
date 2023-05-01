@@ -12,13 +12,13 @@ for _ in range(m):
     a = int(input())
     n_list.append(a)
 
-# n_list.sort()
-# print(n_list)
+n_list.sort()
+print(n_list)
 
-max_speed = int((2 * n) ** 0.5) + 1
+# max_speed = int((2 * n) ** 0.5) + 1
 
-dp = [[float('inf')] * (max_speed+1) for _ in range(n+1)]
-dp[1][0] = 0
+dp = [[float('inf')] * (n+1) for _ in range(n+1)]
+dp[1][1] = 0
 
 def fun():
 
@@ -28,14 +28,14 @@ def fun():
         if stone in n_list:
             continue
 
-        for j in range(1, max_speed):
+        for j in range(1, i):
             v = j
             dp[stone][v] = min(dp[stone - v][v-1], dp[stone - v][v], dp[stone - v][v+1]) + 1
 
     return dp
 
 result = fun()
-# print(result)
+print(result)
 min_jumps = min(dp[n])
 if min_jumps == float('inf'):
     print(-1)

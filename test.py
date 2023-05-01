@@ -1,32 +1,35 @@
 import sys
-input = sys.stdin.readline
 
-n, k = map(int, input().split())
-graph = []
-for _ in range(n):
-    w, v = map(int, input().split())
-    graph.append([w, v])
+# sys.stdin = open('input.txt', 'r')
+# read = sys.stdin.readline
 
-# 중복되는 무게의 물품 중 가치가 높은 것만 남기기
-unique_graph = []
-for i in range(n):
-    if graph[i][1] != 0:
-        unique_graph.append(graph[i])
+'''
+점화식
+DP[step][speed] = min(DP[step - speed][speed - 1], DP[step - speed][speed], DP[step - speed][speed + 1]) + 1
+'''
 
-dp = [0] * (k+1)
 
-# n = 물품의 수 / k = 버틸수 있는 무게 / unique_graph = (무게, 가치)
-def fun(k, unique_graph):
-    for i in range(k+1):
-        for node in unique_graph:
-            weight = node[0]
-            value = node[1]
+def solve():
+    N, M = map(int, input().rstrip().split())
+    max_speed = int((2 * N) ** 0.5) + 1
+    DP = [[float('inf')] * (max_speed + 1) for _ in range(N + 1)]
+    small_stone = set()
+    for _ in range(M):
+        small_stone.add(int(input().rstrip()))
 
-            if i >= weight:
-                dp[i] = max(dp[i], dp[i-weight] + value)
+    DP[2][1] = 1
+    for step in range(3, N + 1):
+        if step in small_stone:
+            continue
+        for speed in range(1, max_speed):
+            DP[step][speed] = min(DP[step - speed][speed - 1], DP[step - speed][speed], DP[step - speed][speed + 1]) + 1
 
-    return dp
+    print(DP)
+    answer = min(DP[N])
+    if answer == float('inf'):
+        print(-1)
+    else:
+        print(answer)
 
-result = fun(k, unique_graph)
-answer = result[k]
-print(answer)
+
+solve()

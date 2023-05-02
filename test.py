@@ -1,35 +1,35 @@
 import sys
+input = sys.stdin.readline
 
-# sys.stdin = open('input.txt', 'r')
-# read = sys.stdin.readline
+a_list = list(input().strip())
+b_list = list(input().strip())
 
-'''
-점화식
-DP[step][speed] = min(DP[step - speed][speed - 1], DP[step - speed][speed], DP[step - speed][speed + 1]) + 1
-'''
+a = len(a_list)
+b = len(b_list)
 
+dp = [[0] * (b+1) for _ in range(2)]
 
-def solve():
-    N, M = map(int, input().rstrip().split())
-    max_speed = int((2 * N) ** 0.5) + 1
-    DP = [[float('inf')] * (max_speed + 1) for _ in range(N + 1)]
-    small_stone = set()
-    for _ in range(M):
-        small_stone.add(int(input().rstrip()))
+def fun():
+    max_length = 0
+    max_index = 0
 
-    DP[2][1] = 1
-    for step in range(3, N + 1):
-        if step in small_stone:
-            continue
-        for speed in range(1, max_speed):
-            DP[step][speed] = min(DP[step - speed][speed - 1], DP[step - speed][speed], DP[step - speed][speed + 1]) + 1
+    for i in range(1, a+1):
+        for j in range(1, b+1):
+            if a_list[i-1] == b_list[j-1]:
+                dp[1][j] = dp[0][j-1] + 1
+                if dp[1][j] > max_length:
+                    max_length = dp[1][j]
+                    max_index = i
+            else:
+                dp[1][j] = 0
 
-    print(DP)
-    answer = min(DP[N])
-    if answer == float('inf'):
-        print(-1)
-    else:
-        print(answer)
+        dp[0] = dp[1][:]
+    
+    print(dp)
+    return max_length, max_index
 
+length, index = fun()
+answer = a_list[index - length:index]
 
-solve()
+print(length)
+print(''.join(answer))

@@ -31,7 +31,7 @@ def fun():
 
                 if next_use > max_use:
                     max_use = next_use
-                    idx_to_remove = j
+                    index= j
 
             set_list[index] = n_list[i]
             cnt += 1

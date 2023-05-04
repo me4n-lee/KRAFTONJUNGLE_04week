@@ -1,6 +1,4 @@
 import sys
-from collections import deque
-
 input = sys.stdin.readline
 
 n, m = map(int, input().split())
@@ -15,12 +13,14 @@ dp = [[-1] * m for _ in range(n)]
 dx = [1, -1, 0, 0]
 dy = [0, 0, 1, -1]
 
-stack = deque([(0, 0)])
-dp[0][0] = 1
-
-while stack:
-    x, y = stack.popleft()
-
+def dfs_stack(x, y):
+    if x == n-1 and y == m-1:
+        return 1
+    
+    if dp[x][y] != -1:
+        return dp[x][y]
+    
+    dp[x][y] = 0
     for k in range(4):
         nx = x + dx[k]
         ny = y + dy[k]
@@ -29,10 +29,11 @@ while stack:
             continue
 
         if graph[nx][ny] < graph[x][y]:
-            if dp[nx][ny] == -1:
-                dp[nx][ny] = 0
-                stack.append((nx, ny))
-            dp[nx][ny] += dp[x][y]
+            dp[x][y] += dfs_stack(nx, ny)
 
-answer = dp[n-1][m-1]
+    return dp[x][y]
+
+answer = dfs_stack(0, 0)
 print(answer)
+
+
